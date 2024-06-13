@@ -1,0 +1,35 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Comment Analyzer Results</title>
+    <style>
+        .positive { color: green; }
+        .negative { color: red; }
+        .neutral { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>YouTube Comment Analyzer Results</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Comment</th>
+                <th>Sentiment Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comment, score in comment_sentiment_pairs %}
+            <tr>
+                <td>{{ comment }}</td>
+                <td class="{% if score > 0 %}positive{% elif score < 0 %}negative{% else %}neutral{% endif %}">
+                    {{ score }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/">Analyze Another Video</a>
+</body>
+</html>

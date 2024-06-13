@@ -1,0 +1,16 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Comment Analyzer</title>
+</head>
+<body>
+    <h1>YouTube Comment Analyzer</h1>
+    <form action="/analyze" method="post">
+        <label for="video_url">Enter YouTube Video URL:</label><br>
+        <input type="text" id="video_url" name="video_url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required><br>
+        <input type="submit" value="Analyze Comments">
+    </form>
+</body>
+</html>
