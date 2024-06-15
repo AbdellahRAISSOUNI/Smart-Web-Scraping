@@ -47,12 +47,12 @@ def analyze():
     try:
         comments = fetch_comments(video_id)
         truncated_comments = truncate_comments(comments)
-        print(f"Truncated comments: {truncated_comments}")
         sentiment_scores = analyze_sentiment(truncated_comments)
+        overall_sentiment = sum(sentiment_scores) / len(sentiment_scores)  # Calculate overall sentiment
         store_comments(video_id, truncated_comments, sentiment_scores)  # Store in database
         comment_sentiment_pairs = list(zip(truncated_comments, sentiment_scores))
         sentiment_plot = plot_sentiments(sentiment_scores)
-        return render_template('results.html', comment_sentiment_pairs=comment_sentiment_pairs, sentiment_plot=sentiment_plot)
+        return render_template('results.html', comment_sentiment_pairs=comment_sentiment_pairs, sentiment_plot=sentiment_plot, overall_sentiment=overall_sentiment)
     except Exception as e:
         return f"An error occurred: {str(e)}", 500
 

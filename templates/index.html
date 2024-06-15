@@ -2,13 +2,17 @@
 <html>
 <head>
     <title>YouTube Comment Sentiment Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>YouTube Comment Sentiment Analyzer</h1>
-    <form action="/analyze" method="post">
-        <label for="video_url">YouTube Video URL:</label>
-        <input type="text" id="video_url" name="video_url" required>
-        <input type="submit" value="Analyze">
-    </form>
+    <div class="container">
+        <h1>YouTube Comment Sentiment Analyzer</h1>
+        <form action="/analyze" method="post">
+            <label for="video_url">YouTube Video URL:</label>
+            <input type="text" id="video_url" name="video_url" required>
+            <input type="submit" value="Analyze">
+        </form>
+    </div>
 </body>
 </html>

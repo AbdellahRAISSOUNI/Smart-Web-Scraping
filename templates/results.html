@@ -2,16 +2,28 @@
 <html>
 <head>
     <title>Sentiment Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>Sentiment Analysis Results</h1>
-    <img src="data:image/png;base64,{{ sentiment_plot }}" alt="Sentiment Distribution">
+    <div class="container">
+        <h1>Sentiment Analysis Results</h1>
+        <img src="data:image/png;base64,{{ sentiment_plot }}" alt="Sentiment Distribution">
 
-    <h2>Comments and Sentiments</h2>
-    <ul>
-        {% for comment, sentiment in comment_sentiment_pairs %}
-            <li>{{ comment }} - Sentiment: {{ sentiment }}</li>
-        {% endfor %}
-    </ul>
+        <h2>Overall Sentiment</h2>
+        <p>The overall sentiment score for the video is: {{ overall_sentiment }}</p>
+
+        <h2>Comments and Sentiments</h2>
+        <ul>
+            {% for comment, sentiment in comment_sentiment_pairs %}
+                <li>
+                    <strong>Comment:</strong> {{ comment }}<br>
+                    <strong>Sentiment:</strong> {{ sentiment }}
+                </li>
+            {% endfor %}
+        </ul>
+
+        <a href="/">Go Back</a>
+    </div>
 </body>
 </html>
