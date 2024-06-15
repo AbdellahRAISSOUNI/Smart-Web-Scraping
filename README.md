@@ -14,9 +14,10 @@ This is a Flask web application that analyzes the sentiment of comments on YouTu
 ## Installation
 
 1. Clone the repository:
-      `git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git`
-
-2. Navigate to the project directory:
+   ```bash
+git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git'
+```
+3. Navigate to the project directory:
    
      `cd youtube-comment-sentiment-analyzer`
 
