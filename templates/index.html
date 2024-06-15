@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>YouTube Comment Sentiment Analyzer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -11,6 +11,13 @@
         <form action="/analyze" method="post">
             <label for="video_url">YouTube Video URL:</label>
             <input type="text" id="video_url" name="video_url" required>
+            <label for="comment_count">Number of comments to analyze:</label>
+            <select id="comment_count" name="comment_count">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="500">500</option>
+                <option value="all">All comments</option>
+            </select>
             <input type="submit" value="Analyze">
         </form>
     </div>

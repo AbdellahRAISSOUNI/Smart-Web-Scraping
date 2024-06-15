@@ -37,6 +37,7 @@ def home():
 @app.route('/analyze', methods=['POST'])
 def analyze():
     video_url = request.form.get('video_url')
+    comment_count = request.form.get('comment_count')
     if not video_url:
         return "Please provide a video URL in the POST request.", 400
 
@@ -46,7 +47,11 @@ def analyze():
 
     try:
         comments = fetch_comments(video_id)
-        truncated_comments = truncate_comments(comments)
+        if comment_count == 'all':
+            truncated_comments = truncate_comments(comments)
+        else:
+            comment_count = int(comment_count)
+            truncated_comments = truncate_comments(comments[:comment_count])
         sentiment_scores = analyze_sentiment(truncated_comments)
         overall_sentiment = sum(sentiment_scores) / len(sentiment_scores)  # Calculate overall sentiment
         store_comments(video_id, truncated_comments, sentiment_scores)  # Store in database

@@ -2,11 +2,31 @@
 <html>
 <head>
     <title>Sentiment Analysis Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("scrollTop").style.display = "block";
+            } else {
+                document.getElementById("scrollTop").style.display = "none";
+            }
+        }
+
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
 </head>
 <body>
     <div class="container">
+        <a href="/" class="back-link">Go Back</a>
+
         <h1>Sentiment Analysis Results</h1>
         <img src="data:image/png;base64,{{ sentiment_plot }}" alt="Sentiment Distribution">
 
@@ -23,7 +43,7 @@
             {% endfor %}
         </ul>
 
-        <a href="/">Go Back</a>
+        <div id="scrollTop" class="scroll-top" onclick="scrollToTop()">&#8679;</div>
     </div>
 </body>
 </html>
