@@ -1,69 +1,109 @@
 # YouTube Comment Sentiment Analyzer
 
-This is a Flask web application that analyzes the sentiment of comments on YouTube videos. The application fetches comments from a given YouTube video URL, performs sentiment analysis on the comments using the Hugging Face Transformers library, and displays the sentiment distribution along with the individual comment sentiments.
+This project is a web application that analyzes the sentiment of comments on YouTube videos. It uses Flask for the web framework, SQLAlchemy for database management, and the Hugging Face Transformers library for sentiment analysis.
 
 ## Features
 
-- Enter a YouTube video URL to fetch comments
-- Choose the number of comments to analyze (50, 100, 500, or all comments)
-- Perform sentiment analysis on the comments using a pre-trained model
-- Display the sentiment distribution as a histogram
-- Show the individual comments and their corresponding sentiment scores
-- Store the analyzed comments and sentiments in a SQLite database
+- Fetches comments from YouTube videos.
+- Analyzes the sentiment of the comments.
+- Stores comments and their sentiment scores in a SQLite database.
+- Displays graphical sentiment distribution.
+- Displays comments along with their sentiment scores and overall sentiment.
+
+## Prerequisites
+
+- Python 3.7+
+- Flask
+- Flask-SQLAlchemy
+- Transformers library by Hugging Face
+- Requests
+- Matplotlib
 
 ## Installation
 
-1. Clone the repository:
-   ```bash
-git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git'
-```
-3. Navigate to the project directory:
-   
-     `cd youtube-comment-sentiment-analyzer`
+1. **Clone the repository:**
 
-4. Create a virtual environment and activate it:
-   
-    ` python -m venv env source env/bin/activate  # On Windows, use env\Scripts\activate`
+    ```sh
+    git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git
+    cd youtube-comment-sentiment-analyzer
+    ```
 
-5. Install the required dependencies:
-     `pip install -r requirements.txt`
+2. **Create a virtual environment and activate it:**
 
-6. Set the YouTube API key in `app.py`:
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+    ```
 
-python
-API_KEY = 'YOUR_YOUTUBE_API_KEY'
+3. **Install the required packages:**
 
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-Replace 'YOUR_YOUTUBE_API_KEY' with your actual YouTube Data API key. You can obtain an API key from the Google Cloud Console.
+## Configuration
+
+1. **Set up your YouTube Data API key:**
+
+    - Obtain an API key from the [Google Cloud Console](https://console.cloud.google.com/).
+    - Replace the placeholder API key in `app.py`:
+
+    ```python
+    API_KEY = 'YOUR_YOUTUBE_DATA_API_KEY'
+    ```
 
 ## Usage
 
-1. Run the Flask application
-  `python app.py`
+1. **Run the application:**
 
-2. Open your web browser and visit `http://localhost:5000`
+    ```sh
+    python app.py
+    ```
 
-3. Enter a YouTube video URL in the input field and select the number of comments to analyze.
+2. **Open your web browser and navigate to:**
 
-4. Click the "Analyze" button to fetch and analyze the comments.
+    ```
+    http://127.0.0.1:5000/
+    ```
 
-5. The application will display the sentiment distribution plot, overall sentiment score, and a list of individual comments with their sentiment scores.
+3. **Analyze YouTube comments:**
 
+    - Enter the URL of the YouTube video you want to analyze.
+    - Select the number of comments to analyze (50, 100, 500, or all comments).
+    - Click the "Analyze" button.
+
+4. **View the results:**
+
+    - The application will display the overall sentiment score for the video.
+    - It will also show each comment with its corresponding sentiment score.
+    - A histogram showing the sentiment distribution will be displayed.
+
+## File Structure
+
+- `app.py`: The main Flask application file.
+- `templates/`: Contains HTML templates for the web pages.
+  - `index.html`: The main page for inputting the YouTube video URL.
+  - `results.html`: The results page displaying the sentiment analysis.
+- `requirements.txt`: A list of required Python packages.
+
+## Screenshots (coming soon)
+
+### Home Page
+
+![Home Page](screenshots/home_page.png)
+
+### Results Page
+
+![Results Page](screenshots/results_page.png)
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ## Contributing
 
-Contributions are welcome! If you find any issues or want to add new features, please open an issue or submit a pull request.
+Contributions are welcome! Please fork the repository and submit a pull request.
 
-## Licence
-This project is licensed under the MIT License.
+## Contact
 
-
-
-
-
-
-
-
-
-
-
+If you have any questions or feedback, feel free to contact me at abdellahraissouni@gmail.com.
