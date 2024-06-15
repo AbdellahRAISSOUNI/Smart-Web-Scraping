@@ -1,0 +1,6 @@
+pip install Flask google-api-python-client pandas nltk textblob
+pip install beautifulsoup4 requests lxml
+pip install selenium webdriver-manager
+pip install flask flask_sqlalchemy textblob selenium webdriver-manager matplotlib
+pip install flask flask_sqlalchemy transformers torch
+pip install tf-keras

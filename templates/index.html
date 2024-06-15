@@ -1,16 +1,14 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>YouTube Comment Analyzer</title>
+    <title>YouTube Comment Sentiment Analyzer</title>
 </head>
 <body>
-    <h1>YouTube Comment Analyzer</h1>
+    <h1>YouTube Comment Sentiment Analyzer</h1>
     <form action="/analyze" method="post">
-        <label for="video_url">Enter YouTube Video URL:</label><br>
-        <input type="text" id="video_url" name="video_url" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" required><br>
-        <input type="submit" value="Analyze Comments">
+        <label for="video_url">YouTube Video URL:</label>
+        <input type="text" id="video_url" name="video_url" required>
+        <input type="submit" value="Analyze">
     </form>
 </body>
 </html>
