@@ -14,19 +14,18 @@ This is a Flask web application that analyzes the sentiment of comments on YouTu
 ## Installation
 
 1. Clone the repository:
-   `git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git`
+      `git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git`
 
 2. Navigate to the project directory:
    
-  `cd youtube-comment-sentiment-analyzer`
+     `cd youtube-comment-sentiment-analyzer`
 
 4. Create a virtual environment and activate it:
    
- ` python -m venv env
-source env/bin/activate  # On Windows, use env\Scripts\activate`
+    ` python -m venv env source env/bin/activate  # On Windows, use env\Scripts\activate`
 
 5. Install the required dependencies:
-  `pip install -r requirements.txt`
+     `pip install -r requirements.txt`
 
 6. Set the YouTube API key in `app.py`:
 
