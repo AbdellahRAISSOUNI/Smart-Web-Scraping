@@ -30,9 +30,9 @@ git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git
 
 6. Set the YouTube API key in `app.py`:
 
-```python
+python
 API_KEY = 'YOUR_YOUTUBE_API_KEY'
-```
+
 
 Replace 'YOUR_YOUTUBE_API_KEY' with your actual YouTube Data API key. You can obtain an API key from the Google Cloud Console.
 
