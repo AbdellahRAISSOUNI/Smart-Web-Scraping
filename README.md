@@ -1,67 +1,67 @@
-YouTube Comment Sentiment Analyzer
+# YouTube Comment Sentiment Analyzer
+
 This is a Flask web application that analyzes the sentiment of comments on YouTube videos. The application fetches comments from a given YouTube video URL, performs sentiment analysis on the comments using the Hugging Face Transformers library, and displays the sentiment distribution along with the individual comment sentiments.
-Features
 
-Enter a YouTube video URL to fetch comments
-Choose the number of comments to analyze (50, 100, 500, or all comments)
-Perform sentiment analysis on the comments using a pre-trained model
-Display the sentiment distribution as a histogram
-Show the individual comments and their corresponding sentiment scores
-Store the analyzed comments and sentiments in a SQLite database
+## Features
 
-Installation
+- Enter a YouTube video URL to fetch comments
+- Choose the number of comments to analyze (50, 100, 500, or all comments)
+- Perform sentiment analysis on the comments using a pre-trained model
+- Display the sentiment distribution as a histogram
+- Show the individual comments and their corresponding sentiment scores
+- Store the analyzed comments and sentiments in a SQLite database
 
-Clone the repository:
+## Installation
 
-Copygit clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git
+1. Clone the repository:
+   `git clone https://github.com/yourusername/youtube-comment-sentiment-analyzer.git`
 
-Navigate to the project directory:
+2. Navigate to the project directory:
+  `cd youtube-comment-sentiment-analyzer`
 
-Copycd youtube-comment-sentiment-analyzer
+3. Create a virtual environment and activate it:
+ ` python -m venv env
+source env/bin/activate  # On Windows, use env\Scripts\activate`
 
-Create a virtual environment and activate it:
+4. Install the required dependencies:
+  `pip install -r requirements.txt`
 
-Copypython -m venv env
-source env/bin/activate  # On Windows, use `env\Scripts\activate`
+5. Set the YouTube API key in `app.py`:
 
-Install the required dependencies:
+```python
+API_KEY = 'YOUR_YOUTUBE_API_KEY'
+```
 
-Copypip install -r requirements.txt
-
-Set the YouTube API key in app.py:
-
-pythonCopyAPI_KEY = 'YOUR_YOUTUBE_API_KEY'
 Replace 'YOUR_YOUTUBE_API_KEY' with your actual YouTube Data API key. You can obtain an API key from the Google Cloud Console.
-Usage
 
-Run the Flask application:
+## Usage
 
-Copypython app.py
+1. Run the Flask application
+  `python app.py`
 
-Open your web browser and visit http://localhost:5000.
-Enter a YouTube video URL in the input field and select the number of comments to analyze.
-Click the "Analyze" button to fetch and analyze the comments.
-The application will display the sentiment distribution plot, overall sentiment score, and a list of individual comments with their sentiment scores.
+2. Open your web browser and visit `http://localhost:5000`
 
-Project Structure
+3. Enter a YouTube video URL in the input field and select the number of comments to analyze.
 
-app.py: The main Flask application file that handles the routes and sentiment analysis logic.
-templates/index.html: The HTML template for the home page where the user enters the YouTube video URL.
-templates/results.html: The HTML template for displaying the sentiment analysis results.
-static/styles.css: The CSS file for styling the web pages.
-comments.db: The SQLite database file for storing analyzed comments and sentiments.
+4. Click the "Analyze" button to fetch and analyze the comments.
 
-Dependencies
-The project uses the following libraries and tools:
+5. The application will display the sentiment distribution plot, overall sentiment score, and a list of individual comments with their sentiment scores.
 
-Flask
-Flask-SQLAlchemy
-Transformers (Hugging Face)
-Requests
-Matplotlib
-SQLite
 
-Contributing
+## Contributing
+
 Contributions are welcome! If you find any issues or want to add new features, please open an issue or submit a pull request.
-License
+
+## Licence
 This project is licensed under the MIT License.
+
+
+
+
+
+
+
+
+
+
+
