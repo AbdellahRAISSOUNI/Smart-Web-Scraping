@@ -4,11 +4,12 @@
     <title>YouTube Comment Sentiment Analyzer</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>YouTube Comment Sentiment Analyzer</h1>
-        <form action="/analyze" method="post">
+        <form id="analyze-form" action="/analyze" method="post">
             <label for="video_url">YouTube Video URL:</label>
             <input type="text" id="video_url" name="video_url" required>
             <label for="comment_count">Number of comments to analyze:</label>
@@ -20,6 +21,43 @@
             </select>
             <input type="submit" value="Analyze">
         </form>
+        <div id="loading" style="display: none;">
+            <h2>Analyzing comments... Please wait.</h2>
+            <div class="loading-animation">
+                <div class="emoji">🧠</div>
+                <div class="emoji">💬</div>
+                <div class="emoji">🔍</div>
+                <div class="emoji">📊</div>
+            </div>
+            <p id="loading-message">Crunching the numbers and decoding sentiments...</p>
+        </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#analyze-form').on('submit', function() {
+                $('#loading').show();
+                updateLoadingMessage();
+            });
+        });
+
+        function updateLoadingMessage() {
+            var messages = [
+                "Decoding the sentiment behind each comment...",
+                "Analyzing the emotional tone of discussions...",
+                "Uncovering the hidden meanings in YouTube comments...",
+                "Measuring the temperature of public opinion...",
+                "Diving deep into the sea of user feedback...",
+                "Calculating the mood of the YouTube community..."
+            ];
+            var currentIndex = 0;
+
+            setInterval(function() {
+                $('#loading-message').fadeOut(function() {
+                    $(this).text(messages[currentIndex]).fadeIn();
+                });
+                currentIndex = (currentIndex + 1) % messages.length;
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

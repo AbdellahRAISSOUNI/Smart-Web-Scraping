@@ -1,49 +1,257 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Sentiment Analysis Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        window.onscroll = function() {
-            scrollFunction();
-        };
-
-        function scrollFunction() {
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                document.getElementById("scrollTop").style.display = "block";
-            } else {
-                document.getElementById("scrollTop").style.display = "none";
-            }
-        }
-
-        function scrollToTop() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-    </script>
+    <title>YouTube Comment Analysis Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <div class="container">
+            <h1>YouTube Comment Analysis Results</h1>
+        </div>
+    </header>
+
     <div class="container">
-        <a href="/" class="back-link">Go Back</a>
+        <div class="card" id="video-info">
+            <img id="video-thumbnail" src="" alt="Video Thumbnail">
+            <div>
+                <h2 id="video-title"></h2>
+                <p id="video-stats"></p>
+            </div>
+        </div>
 
-        <h1>Sentiment Analysis Results</h1>
-        <img src="data:image/png;base64,{{ sentiment_plot }}" alt="Sentiment Distribution">
+        <div class="grid">
+            <div class="card">
+                <h3>Overall Sentiment</h3>
+                <div id="sentiment-gauge"></div>
+            </div>
+            <div class="card">
+                <h3>Sentiment Distribution</h3>
+                <div id="sentiment-distribution"></div>
+            </div>
+            <div class="card full-width">
+                <h3>Word Clouds</h3>
+                <div class="wordcloud-container">
+                    <div>
+                        <h4>All Comments</h4>
+                        <img src="data:image/png;base64,{{ wordcloud_plot }}" alt="Word Cloud">
+                    </div>
+                    <div>
+                        <h4>Positive Comments</h4>
+                        <img src="data:image/png;base64,{{ positive_wordcloud }}" alt="Positive Word Cloud">
+                    </div>
+                    <div>
+                        <h4>Negative Comments</h4>
+                        <img src="data:image/png;base64,{{ negative_wordcloud }}" alt="Negative Word Cloud">
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Emotion Distribution</h3>
+                <div id="emotion-plot"></div>
+            </div>
+            <div class="card">
+                <h3>Key Statistics</h3>
+                <ul id="key-stats">
+                    <li>Total Comments Analyzed: <span id="total-comments"></span></li>
+                    <li>Positive Comments: <span id="positive-comments"></span></li>
+                    <li>Negative Comments: <span id="negative-comments"></span></li>
+                    <li>Neutral Comments: <span id="neutral-comments"></span></li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Topic Distribution</h3>
+                <div id="topic-distribution"></div>
+            </div>
+            <div class="card">
+                <h3>Aspect-Based Sentiment</h3>
+                <div id="aspect-sentiment"></div>
+            </div>
+            <div class="card">
+                <h3>Language Distribution</h3>
+                <div id="language-distribution"></div>
+            </div>
+            <div class="card">
+                <h3>Top Keywords</h3>
+                <div id="keywords"></div>
+            </div>
+        </div>
 
-        <h2>Overall Sentiment</h2>
-        <p>The overall sentiment score for the video is: {{ overall_sentiment }}</p>
+        <div class="card">
+            <h3>Sentiment Over Time</h3>
+            <div id="sentiment-timeline"></div>
+        </div>
 
-        <h2>Comments and Sentiments</h2>
-        <ul>
-            {% for comment, sentiment in comment_sentiment_pairs %}
-                <li>
-                    <strong>Comment:</strong> {{ comment }}<br>
-                    <strong>Sentiment:</strong> {{ sentiment }}
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="card">
+            <h3>Top Comments</h3>
+            <div class="tab-container">
+                <button class="tab-button active" data-tab="positive">Most Positive</button>
+                <button class="tab-button" data-tab="negative">Most Negative</button>
+            </div>
+            <div id="positive-comments-list" class="tab-content active">
+                <ul class="comment-list">
+                    {% for comment, sentiment in top_positive %}
+                        <li>
+                            <p>{{ comment }}</p>
+                            <span class="sentiment-score positive">Sentiment: {{ sentiment|round(2) }}</span>
+                            <span class="emotion-score">{{ emotions[loop.index0][0] }} ({{ emotions[loop.index0][1]|round(2) }})</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="negative-comments-list" class="tab-content">
+                <ul class="comment-list">
+                    {% for comment, sentiment in top_negative %}
+                        <li>
+                            <p>{{ comment }}</p>
+                            <span class="sentiment-score negative">Sentiment: {{ sentiment|round(2) }}</span>
+                            <span class="emotion-score">{{ emotions[loop.index0][0] }} ({{ emotions[loop.index0][1]|round(2) }})</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
 
-        <div id="scrollTop" class="scroll-top" onclick="scrollToTop()">&#8679;</div>
+        <div class="card">
+            <h3>All Comments</h3>
+            <input type="text" id="comment-search" placeholder="Search comments...">
+            <ul class="comment-list">
+                {% for comment, sentiment in comment_sentiment_pairs %}
+                    <li>
+                        <p>{{ comment }}</p>
+                        <span class="sentiment-score {% if sentiment > 0 %}positive{% elif sentiment < 0 %}negative{% else %}neutral{% endif %}">
+                            Sentiment: {{ sentiment|round(2) }}
+                        </span>
+                        <span class="emotion-score">{{ emotions[loop.index0][0] }} ({{ emotions[loop.index0][1]|round(2) }})</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+
+    <script>
+        // Plotly charts
+        var sentimentGauge = {{ sentiment_gauge | safe }};
+        Plotly.newPlot('sentiment-gauge', sentimentGauge.data, sentimentGauge.layout);
+
+        var sentimentDistribution = {{ sentiment_plot | safe }};
+        Plotly.newPlot('sentiment-distribution', sentimentDistribution.data, sentimentDistribution.layout);
+
+        // Sentiment timeline
+        var sentimentTimeline = {
+            x: {{ comment_dates | safe }},
+            y: {{ sentiment_scores | safe }},
+            type: 'scatter',
+            mode: 'lines+markers'
+        };
+        var timelineLayout = {
+            title: 'Sentiment Over Time',
+            xaxis: { title: 'Date' },
+            yaxis: { title: 'Sentiment Score' }
+        };
+        Plotly.newPlot('sentiment-timeline', [sentimentTimeline], timelineLayout);
+
+        // Emotion plot
+        var emotionPlot = {{ emotion_plot | safe }};
+        Plotly.newPlot('emotion-plot', emotionPlot.data, emotionPlot.layout);
+
+        // Topic Distribution
+        var topicData = {
+            x: {{ topics.Name | tojson }},
+            y: {{ topics.Count | tojson }},
+            type: 'bar'
+        };
+        var topicLayout = {
+            title: 'Topic Distribution',
+            xaxis: { title: 'Topic' },
+            yaxis: { title: 'Count' }
+        };
+        Plotly.newPlot('topic-distribution', [topicData], topicLayout);
+
+        // Aspect-Based Sentiment
+        var aspectData = [];
+        {% for aspect, sentiments in aspect_sentiments.items() %}
+            aspectData.push({
+                y: {{ sentiments | tojson }},
+                type: 'box',
+                name: '{{ aspect }}'
+            });
+        {% endfor %}
+        var aspectLayout = {
+            title: 'Aspect-Based Sentiment',
+            yaxis: { title: 'Sentiment Score' }
+        };
+        Plotly.newPlot('aspect-sentiment', aspectData, aspectLayout);
+
+        // Language Distribution
+        var languageData = {
+            labels: {{ language_distribution.keys() | list | tojson }},
+            values: {{ language_distribution.values() | list | tojson }},
+            type: 'pie'
+        };
+        var languageLayout = {
+            title: 'Language Distribution'
+        };
+        Plotly.newPlot('language-distribution', [languageData], languageLayout);
+
+        // Keywords
+        var keywordData = {
+            x: {{ keywords | map(attribute=1) | list | tojson }},
+            y: {{ keywords | map(attribute=0) | list | tojson }},
+            type: 'bar',
+            orientation: 'h'
+        };
+        var keywordLayout = {
+            title: 'Top Keywords',
+            xaxis: { title: 'Count' },
+            yaxis: { title: 'Keyword' }
+        };
+        Plotly.newPlot('keywords', [keywordData], keywordLayout);
+
+        // Update key statistics
+        $('#total-comments').text('{{ comment_sentiment_pairs|length }}');
+        $('#positive-comments').text('{{ positive_count }}');
+        $('#negative-comments').text('{{ negative_count }}');
+        $('#neutral-comments').text('{{ neutral_count }}');
+
+        // Tab functionality
+        $('.tab-button').click(function() {
+            $('.tab-button').removeClass('active');
+            $(this).addClass('active');
+            $('.tab-content').removeClass('active');
+            $('#' + $(this).data('tab') + '-comments-list').addClass('active');
+        });
+
+        // Comment search functionality
+        $('#comment-search').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.comment-list li').each(function() {
+                var commentText = $(this).find('p').text().toLowerCase();
+                if (commentText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+        // Fetch video info
+        $.getJSON('https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id={{ video_id }}&key={{ youtube_api_key }}', function(data) {
+            var video = data.items[0];
+            $('#video-thumbnail').attr('src', video.snippet.thumbnails.medium.url);
+            $('#video-title').text(video.snippet.title);
+            $('#video-stats').html(`
+                <strong>Views:</strong> ${video.statistics.viewCount.toLocaleString()} | 
+                <strong>Likes:</strong> ${video.statistics.likeCount.toLocaleString()} | 
+                <strong>Comments:</strong> ${video.statistics.commentCount.toLocaleString()}
+            `);
+        });
+    </script>
 </body>
 </html>
